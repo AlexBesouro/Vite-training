@@ -1,7 +1,10 @@
 function createHeader() {
     return `
         <header class="site-header">
-            <h1 class="site-title">Mon Mini-Blog</h1>
+            <div class="header-top">
+                <h1 class="site-title">Mon Mini-Blog</h1>
+                <button class="theme-toggle" data-toggle-theme title="Toggle dark mode">🌙</button>
+            </div>
             <nav class="site-nav">
                 <a href="/home" data-route>Home</a>
                 <a href="/articles" data-route>Articles</a>
