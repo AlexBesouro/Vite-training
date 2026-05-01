@@ -11,6 +11,7 @@ import {
     renderArticle,
 } from './views/index.js'
 import { ARTICLES } from './mock_db/DB.js'
+import { loadArticlesAction } from './api/actions'
 
 const app = document.querySelector('#app')
 
@@ -21,10 +22,11 @@ const routes = [
     { path: /^\/article\/(\d+)$/, render: renderArticle },
     { path: /^.*$/, render: renderNotFound },
 ]
-
 const store = createStore({
-    articles: ARTICLES,
+    articles: [], //ARTICLES,
+    loading: false,
     currentArticle: null,
+    error: null,
     theme: localStorage.getItem('blog-theme') || 'light',
 })
 
@@ -34,7 +36,7 @@ function applyTheme(theme) {
 
 applyTheme(store.getState().theme)
 
-store.subsrcibe((state) => {
+store.subscribe((state) => {
     applyTheme(state.theme)
 })
 
@@ -48,29 +50,37 @@ function getMatchedRoute(path) {
     return null
 }
 
-function renderInit(route) {
+async function renderInit(route) {
     app.innerHTML = `
     <main>
         <header>${createHeader()}</header>
         <section id="center"></section>
         <footer>${createFooter()}</footer>
     </main>`
-    navigateTo(route)
+    await navigateTo(route)
 }
 
-function renderAppContent(func) {
+async function renderAppContent(func) {
     const sectionContent = document.querySelector('#center')
-    sectionContent.innerHTML = func()
+    sectionContent.innerHTML = await func()
 }
-function navigateTo(route) {
+async function navigateTo(route) {
     const matchData = getMatchedRoute(route)
     if (matchData) {
         const { activeRoute, params } = matchData
-        renderAppContent(() => activeRoute.render(...params))
+        if (route === '/articles' || route.startsWith('/article/')) {
+            loadArticlesAction()
+        }
+        await renderAppContent(() => activeRoute.render(...params))
     }
     if (window.location.pathname !== route) {
         window.history.pushState({}, '', route)
     }
+}
+
+async function rerender() {
+    const currentPath = window.location.pathname
+    await navigateTo(currentPath)
 }
 document.addEventListener('click', (e) => {
     const link = e.target.closest('[data-route]')
@@ -91,16 +101,16 @@ document.addEventListener('click', (e) => {
 })
 
 window.addEventListener('popstate', () => {
-    navigateTo.window.location.pathname
+    navigateTo(window.location.pathname)
 })
 
 const start =
     window.location.pathname === '/'
-        ? renderInit('/home')
-        : renderInit(window.location.pathname)
+        ? await renderInit('/home')
+        : await renderInit(window.location.pathname)
 
 console.log(store.getState())
 console.log('My Mini-Blog SPA - Powered by Vite!')
 console.log('Mode:', import.meta.env.MODE)
 
-export { store }
+export { store, rerender }
