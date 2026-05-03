@@ -1,0 +1,369 @@
+/* 1. Сброс отступов и настройка высоты */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
+    line-height: 1.5;
+}
+
+/* 2. Контейнер-родитель (должен быть #app в Vite) */
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* 3. Основной контент (тянется, выталкивая футер) */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* 4. Компоненты */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.header-logo img {
+    /* Жестко задаем высоту */
+    height: 40px;
+
+    /* Сохраняем пропорции, ширина подстроится автоматически */
+    width: auto;
+
+    /* На всякий случай, чтобы изображение не растягивалось */
+    display: block;
+}
+
+footer {
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+}
+
+/* 5. Навигация */
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+}
+
+/* 6. Темы */
+:root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --border: #eeeeee;
+}
+
+[data-theme="dark"] {
+    --bg: #121212;
+    --text: #f5f5f5;
+    --border: #333333;
+}
+
+/* Кнопка темы */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.home-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.feature-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff0000;
+}
+
+.cta-button {
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: #cc0000;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Основная секция со списком */
+.pokemons {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pokemons h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-color, #333);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Сетка карточек */
+.pokemons-list {
+    /* Если ты добавишь этот класс в обертку ${pokemonHTML} */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Карточка покемона */
+.pokemon-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ID покемона (#001) */
+.pokemon-card p {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Изображение */
+.pokemon-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin: 10px 0;
+}
+
+/* Имя */
+.pokemon-card h3 {
+    margin: 10px 0 0;
+    text-transform: capitalize;
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+.loader {
+    display: block;
+    margin: 50px auto;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+.pokemon-detail-card {
+    display: flex;
+    gap: 40px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+/* The grey image placeholder look */
+.pokemon-image-section {
+    flex: 1;
+    background: #f5f7f9;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.detail-img {
+    width: 250px;
+    height: auto;
+    filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+.pokemon-info-section {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Statistics Progress Bars */
+.stat-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-family: sans-serif;
+}
+
+.stat-label {
+    width: 90px;
+    font-size: 11px;
+    color: #777;
+    font-weight: bold;
+}
+
+.stat-bar-bg {
+    flex-grow: 1;
+    height: 10px;
+    background: #eceff1;
+    border-radius: 5px;
+    margin: 0 15px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: #546e7a; /* Muted dark blue-grey from wireframe */
+    border-radius: 5px;
+}
+
+.stat-value {
+    width: 30px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* Buttons and Tags */
+.add-team-btn {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #cfd8dc;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.add-team-btn:hover {
+    background: #fcfcfc;
+}
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.pokemon-team-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.team-card-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.team-image-box img {
+    width: 80px; /* Уменьшенный размер */
+    height: 80px;
+    object-fit: contain;
+}
+
+.team-info-box {
+    flex-grow: 1;
+}
+
+.team-info-box .pokemon-name {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+.remove-team-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
